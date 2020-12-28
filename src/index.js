@@ -31,11 +31,17 @@ let addNewCategoryToList = (name) => {
 let getCategoryFormValues = () => {
   catForm = document.querySelector('.category-form');
 
+  document.querySelector('.close-form-btn').addEventListener('click', function(e) {
+    document.querySelector('.category-form-div').style.visibility = 'hidden';
+    document.querySelector('.category-form-div').style.opacity = '0';
+  });
+
   catForm.addEventListener('submit', function (e) {
     let myName = catForm.elements[0].value;
     addNewCategoryToList(myName);
     catForm.reset();
-    document.querySelector('.category-form-div').style.display = 'none';
+    document.querySelector('.category-form-div').style.visibility = 'hidden';
+    document.querySelector('.category-form-div').style.opacity = '0';
     e.preventDefault();
   });
 }
@@ -44,6 +50,7 @@ categoryButton.addEventListener('click', function () {
   let formDiv = document.querySelector('.category-form-div');
   formDiv.innerHTML = categoryForm();
   getCategoryFormValues();
-  formDiv.style.display = 'block';
+  formDiv.style.visibility = 'visible';
+  formDiv.style.opacity = 1;
 });
 
