@@ -10,6 +10,16 @@ let leftPaneDiv = document.querySelector('.left-pane-div');
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories</span><ul class="inner-item-list"></ul></li></ul><button class="new-category-btn">Create New Category</button>';
 
 
+let outerListItems = document.querySelectorAll('.outer-list-items > span');
+
+outerListItems[0].addEventListener('click', function() {
+  document.querySelector('.inner-item-list').classList.remove('appear');
+});
+
+outerListItems[outerListItems.length - 1].addEventListener('click', function() {
+  document.querySelector('.inner-item-list').classList.toggle('appear');
+}); 
+
 let categoryButton = document.querySelector('.new-category-btn');
 console.log(categoryButton.textContent);
 
