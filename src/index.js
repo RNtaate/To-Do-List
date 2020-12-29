@@ -1,5 +1,6 @@
 import category from './category';
 import {categoryForm, capitalize, todoItemForm} from './forms';
+import task from './task';
 
 let body = document.querySelector('body');
 let catForm;
@@ -8,8 +9,10 @@ let categories = [];
 let allToDos = [];
 
 let leftPaneDiv = document.querySelector('.left-pane-div');
+let rightPaneDiv = document.querySelector('.right-pane-div');
 
-leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><button class="new-category-btn">Create New Category</button>';
+
+leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
 
 let innerListItemsUpdater = () => {
   let listItems = document.querySelectorAll('.inner-list-items');
@@ -21,6 +24,7 @@ let innerListItemsUpdater = () => {
       }
 
       e.target.classList.add('inner-list-items-active');
+      document.querySelector('.edit-delete-category-div').style.display = 'flex';
     });
   }
 }
@@ -42,7 +46,7 @@ for(let i = 0; i < outerListItems.length; i += 1) {
         document.querySelector('.inner-item-list').classList.remove('appear');
         let selectedList = document.querySelector('.selected');
         let selectedInnerList = document.querySelector('.inner-list-items-active');
-
+        document.querySelector('.edit-delete-category-div').style.display = 'none';
         if(selectedList != null) {
           selectedList.classList.remove('selected'); 
         }
