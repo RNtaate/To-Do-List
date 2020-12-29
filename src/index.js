@@ -1,5 +1,5 @@
 import category from './category';
-import categoryForm from './forms';
+import {categoryForm, capitalize, todoItemForm} from './forms';
 
 let body = document.querySelector('body');
 let catForm;
