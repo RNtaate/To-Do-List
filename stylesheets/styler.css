@@ -102,10 +102,17 @@ section {
   border-left: 2px solid cyan;
 }
 
-.new-category-btn {
+.category-btns {
   position: absolute;
   left: 0;
   bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.new-category-btn,
+.edit-delete-category-div > button {
   width: 100%;
   border: 1px solid #444;
   font-size: 1.2em;
@@ -116,7 +123,18 @@ section {
   outline: none;
 }
 
-.new-category-btn:hover {
+.edit-delete-category-div {
+  display: none;
+  justify-content: space-between;
+  margin-top: 3px;
+}
+
+.edit-delete-category-div > button {
+  font-size: 0.9em;
+}
+
+.new-category-btn:hover,
+.edit-delete-category-div > button:hover {
   cursor: pointer;
   color: cyan;
 }
