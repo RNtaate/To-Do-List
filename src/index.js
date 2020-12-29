@@ -11,10 +11,16 @@ leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><
 
 
 let outerListItems = document.querySelectorAll('.outer-list-items > span');
-
 for(let i = 0; i < outerListItems.length; i += 1) {
   outerListItems[i].addEventListener('click', function(e){
-    console.log(e.target.textContent);
+
+    let updatedOuterListsItems = document.querySelectorAll('.outer-list-items > span');
+    for(let j = 0; j < updatedOuterListsItems.length; j += 1) {
+      updatedOuterListsItems[j].classList.remove('outer-active');
+    }  
+
+    e.target.classList.add('outer-active');
+
     switch(e.target.textContent) {
       case 'All':
         document.querySelector('.inner-item-list').classList.remove('appear');
@@ -27,7 +33,6 @@ for(let i = 0; i < outerListItems.length; i += 1) {
       case 'Categories':
         document.querySelector('.inner-item-list').classList.toggle('appear');
         e.target.children[0].classList.toggle('selected');
-        console.log('Executed the categories section');
         break;
 
       default:
