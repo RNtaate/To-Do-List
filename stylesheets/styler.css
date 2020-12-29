@@ -53,6 +53,7 @@ section {
 
 .outer-list-items:hover > span {
   background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
 }
 
 .outer-active {
@@ -60,7 +61,6 @@ section {
   border: none;
   color: cyan;
   border-left: 2px solid cyan;
-  cursor: pointer;
 }
 
 .outer-list-items > span > i {
@@ -86,13 +86,17 @@ section {
 
 .inner-list-items {
   font-size: 1em;
-  color: #fff;
   width: 100%;
   padding: 5px 0 5px 10px;
   list-style-type: none;
 }
 
 .inner-list-items:hover {
+  background-color: #111;
+  cursor: pointer;
+}
+
+.inner-list-items-active {
   background-color: #111;
   color: cyan;
   border-left: 2px solid cyan;
