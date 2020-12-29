@@ -25,6 +25,7 @@ section {
 }
 
 .left-pane-div {
+  color: #fff;
   width: 20%;
   background-color: #1b1b1b;
   padding: 10px 0;
@@ -42,7 +43,7 @@ section {
 }
 
 .outer-list-items > span {
-  color: #fff;
+  /* color: #fff; */
   font-size: 1.3em;
   font-weight: 500;
   padding: 10px 20px;
@@ -51,6 +52,10 @@ section {
 }
 
 .outer-list-items:hover > span {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.outer-active {
   background-color: rgba(255, 255, 255, 0.1);
   border: none;
   color: cyan;
