@@ -87,7 +87,7 @@ let addNewCategoryToList = (name) => {
 
 addNewCategoryToList('Uncategorised');
 
-let getCategoryFormValues = () => {
+let getCategoryFormValues = (value = null) => {
   catForm = document.querySelector('.category-form');
 
   document.querySelector('.close-form-btn').addEventListener('click', function(e) {
@@ -97,7 +97,21 @@ let getCategoryFormValues = () => {
 
   catForm.addEventListener('submit', function (e) {
     let myName = catForm.elements[0].value;
-    addNewCategoryToList(myName);
+    if(value === null){
+      addNewCategoryToList(myName);
+    }
+    else {
+
+      for(let i = 0; i < categories.length; i += 1) {
+        if(categories[i].getName() === value.textContent) {
+          categories[i].setName(catForm.elements[0].value);
+          break;
+        }
+      }
+
+      value.textContent = catForm.elements[0].value;
+
+    }
     catForm.reset();
     document.querySelector('.category-form-div').style.visibility = 'hidden';
     document.querySelector('.category-form-div').style.opacity = '0';
@@ -114,3 +128,16 @@ categoryButton.addEventListener('click', function () {
   formDiv.style.opacity = 1;
 });
 
+let editCategoryButton = document.querySelector('.edit-category-btn');
+
+editCategoryButton.addEventListener('click', function() {
+
+  let selectedCategory  = document.querySelector('.inner-list-items-active');
+  let formDiv = document.querySelector('.category-form-div');
+  formDiv.innerHTML = categoryForm(selectedCategory.textContent);
+
+  getCategoryFormValues(selectedCategory);
+
+  formDiv.style.visibility = 'visible';
+  formDiv.style.opacity = 1;
+});
