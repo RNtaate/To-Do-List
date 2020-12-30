@@ -5,10 +5,22 @@ let task = (title, description, date, priority, categoryName) => {
   let taskPriority = priority;
   let taskCat = categoryName;
 
-  let getTask = () => {
+  let getTaskTitle = () => {
     return taskTitle;
   }
-  return { getTask };
+
+  let getTaskDate = () => {
+    return taskDate;
+  }
+
+  let setTaskCat = (catName) => {
+    taskCat = catName;
+  }
+
+  let getTaskCat = () => {
+    return taskCat;
+  }
+  return { getTaskTitle, getTaskCat, setTaskCat };
 }
 
 export default task;
