@@ -19,7 +19,7 @@ main {
   height: 100vh;
 }
 
-section {
+.main-section {
   display: flex;
   height: 100%;
 }
