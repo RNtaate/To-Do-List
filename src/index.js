@@ -25,6 +25,8 @@ let innerListItemsUpdater = () => {
 
       e.target.classList.add('inner-list-items-active');
       document.querySelector('.edit-delete-category-div').style.display = 'flex';
+      document.querySelector('.no-category-selected').style.display = 'none';
+      document.querySelector('.category-heading').textContent = e.target.textContent;
     });
   }
 }
@@ -47,6 +49,8 @@ for(let i = 0; i < outerListItems.length; i += 1) {
         let selectedList = document.querySelector('.selected');
         let selectedInnerList = document.querySelector('.inner-list-items-active');
         document.querySelector('.edit-delete-category-div').style.display = 'none';
+        document.querySelector('.no-category-selected').style.display = 'none';
+        document.querySelector('.category-heading').textContent = e.target.textContent;
         if(selectedList != null) {
           selectedList.classList.remove('selected'); 
         }
@@ -105,6 +109,10 @@ let getCategoryFormValues = (value = null) => {
       for(let i = 0; i < categories.length; i += 1) {
         if(categories[i].getName() === value.textContent) {
           categories[i].setName(catForm.elements[0].value);
+          let categoryHeading = document.querySelector('.category-heading');
+          if(categoryHeading.textContent === value.textContent) {
+            categoryHeading.textContent = catForm.elements[0].value;
+          }
           break;
         }
       }
@@ -141,3 +149,8 @@ editCategoryButton.addEventListener('click', function() {
   formDiv.style.visibility = 'visible';
   formDiv.style.opacity = 1;
 });
+
+
+//Right Pane Main Code
+
+rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul></ul></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
