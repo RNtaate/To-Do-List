@@ -13,7 +13,7 @@ let rightPaneDiv = document.querySelector('.right-pane-div');
 
 
 let dummyTask = task('Dummy Task', 'This is a dummy task', '2020/12/30', 'high', 'Uncategorised');
-let readingTask = task('Reading Task', 'This is a dummy task', '2020/12/30', 'high', 'Reading');
+let readingTask = task('Reading Task', 'This is a dummy task', '2020/12/30', 'low', 'Reading');
 allToDos.push(dummyTask);
 allToDos.push(readingTask);
 
@@ -24,6 +24,8 @@ let getTasksList = (taskArray) => {
   let myTaskList = document.querySelector('.tasks-list')
   myTaskList.innerHTML = "";
 
+  let displayDiv = document.querySelector('.inner-right-section-div');
+
   for(let i = 0; i < taskArray.length; i += 1) {
     let taskItem = document.createElement('li');
     taskItem.classList.add('task-list-item');
@@ -33,12 +35,13 @@ let getTasksList = (taskArray) => {
     taskHeading.textContent = taskArray[i].getTaskTitle();
 
     let taskDueDate = document.createElement('span');
-    taskDueDate.textContent = taskArray[i].getTaskDate();
+    taskDueDate.textContent = "Due Date: " + taskArray[i].getTaskDate();
 
     taskItem.appendChild(taskHeading);
     taskItem.appendChild(taskDueDate);
 
     myTaskList.appendChild(taskItem);
+    displayDiv.style.display = 'block';
   }
 
 }
@@ -196,4 +199,4 @@ editCategoryButton.addEventListener('click', function() {
 
 //Right Pane Main Code
 
-rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
+rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><div class="inner-right-section-div"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul><p class="note-par"><b>NOTE: </b>red is for high-priority, green is for medium-priority, blue is for low-priority</p></div></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
