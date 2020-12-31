@@ -34,6 +34,7 @@ main {
 }
 
 .right-pane-div {
+  position: relative;
   width: 80%;
   background-color: lightgrey;
 }
@@ -117,7 +118,7 @@ main {
   border: 1px solid #444;
   font-size: 1.2em;
   color: white;
-  background: linear-gradient(#777, #333);
+  background: linear-gradient(#555, #333);
   padding: 5px;
   font-weight: 700;
   outline: none;
@@ -194,4 +195,93 @@ input[type="submit"] {
   color: white;
   font-size: 1em;
   font-weight: bold;
+}
+
+.create-task-btn {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  outline: none;
+  padding: 10px 10px;
+  font-size: 1.2em;
+  background: #5cb85c;
+  color: white;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.right-pane-upper-section {
+  height: 100%;
+  position: relative;
+}
+
+.inner-right-section-div {
+  display: none;
+}
+
+.category-heading {
+  text-align: center;
+  font-size: 2em;
+  padding: 15px 0;
+  text-decoration: underline;
+}
+
+.category-tasks-div {
+  padding: 0 100px;
+}
+
+.tasks-list {
+  max-height: 70vh;
+  height: 75vh;
+  overflow: auto;
+  background-color: #fff;
+  list-style-type: none;
+  padding: 20px 10px;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3) inset;
+}
+
+.task-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  align-items: center;
+}
+
+.task-list-item:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.note-par {
+  padding: 10px;
+  text-align: center;
+}
+
+.high {
+  background-color: red;
+}
+
+.low {
+  background-color: blue;
+}
+
+.medium {
+  background-color: green;
+}
+
+.no-category-selected {
+  font-size: 40px;
+  color: gray;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.create-task-btn:hover {
+  cursor: pointer;
+  background: linear-gradient(#555, #333);
 }
