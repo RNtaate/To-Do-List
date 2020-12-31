@@ -12,7 +12,36 @@ let leftPaneDiv = document.querySelector('.left-pane-div');
 let rightPaneDiv = document.querySelector('.right-pane-div');
 
 
+let dummyTask = task('Dummy Task', 'This is a dummy task', '2020/12/30', 'high', 'Uncategorised');
+let readingTask = task('Reading Task', 'This is a dummy task', '2020/12/30', 'high', 'Reading');
+allToDos.push(dummyTask);
+allToDos.push(readingTask);
+
+
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
+
+let getTasksList = (taskArray) => {
+  let myTaskList = document.querySelector('.tasks-list')
+  myTaskList.innerHTML = "";
+
+  for(let i = 0; i < taskArray.length; i += 1) {
+    let taskItem = document.createElement('li');
+    taskItem.classList.add('task-list-item');
+    taskItem.classList.add(taskArray[i].getPriority());
+
+    let taskHeading = document.createElement('h3');
+    taskHeading.textContent = taskArray[i].getTaskTitle();
+
+    let taskDueDate = document.createElement('span');
+    taskDueDate.textContent = taskArray[i].getTaskDate();
+
+    taskItem.appendChild(taskHeading);
+    taskItem.appendChild(taskDueDate);
+
+    myTaskList.appendChild(taskItem);
+  }
+
+}
 
 let innerListItemsUpdater = () => {
   let listItems = document.querySelectorAll('.inner-list-items');
@@ -27,6 +56,11 @@ let innerListItemsUpdater = () => {
       document.querySelector('.edit-delete-category-div').style.display = 'flex';
       document.querySelector('.no-category-selected').style.display = 'none';
       document.querySelector('.category-heading').textContent = e.target.textContent;
+
+      let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() === e.target.textContent.toLowerCase());
+
+      getTasksList(targetArray);
+  
     });
   }
 }
@@ -58,6 +92,8 @@ for(let i = 0; i < outerListItems.length; i += 1) {
         if(selectedInnerList != null) {
           selectedInnerList.classList.remove('inner-list-items-active');           
         }
+
+        getTasksList(allToDos);
         break;
 
       case 'Categories':
@@ -90,6 +126,7 @@ let addNewCategoryToList = (name) => {
 }
 
 addNewCategoryToList('Uncategorised');
+addNewCategoryToList('Reading');
 
 let getCategoryFormValues = (value = null) => {
   catForm = document.querySelector('.category-form');
@@ -114,6 +151,12 @@ let getCategoryFormValues = (value = null) => {
             categoryHeading.textContent = catForm.elements[0].value;
           }
           break;
+        }
+      }
+
+      for(let j = 0; j < allToDos.length; j += 1) {
+        if(allToDos[j].getTaskCat() === value.textContent){
+          allToDos[j].setTaskCat(catForm.elements[0].value);
         }
       }
 
@@ -153,4 +196,4 @@ editCategoryButton.addEventListener('click', function() {
 
 //Right Pane Main Code
 
-rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul></ul></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
+rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
