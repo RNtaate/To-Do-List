@@ -24,11 +24,11 @@ let todoItemForm = (arr) => {
     op.textContent = capitalize(arr[i].getName());
     select.appendChild(op);
   }
-  myDiv.appendChild(select);
+  mySelectDiv.appendChild(select);
 
   let selectHolder = mySelectDiv.innerHTML + '';
 
-  let todoForm = '<form action="#" method="POST" class="category-form"><input type="text" placeholder="Enter Task title" required><textarea placeholder="Describe your task here" rows="5"></textarea><label>Task due date : </label><input type="date" placeholder="Give it a due date" required><label>Task Priority: </label><span><input type="checkbox" value="high"> High</span><span><input type="checkbox" value="medium"> Medium</span><span><input type="checkbox" value="low" checked> Low</span>' + selectHolder + '</form>'
+  let todoForm = '<form action="#" method="POST" class="category-form task-form"><span class="close-form-btn">&times;</span><input type="text" placeholder="Enter Task title" id="task-title" required><textarea placeholder="Describe your task here" rows="5" id="task-desc" required></textarea><label>Task due date : </label><input type="date" placeholder="Give it a due date" id="task-date" required><label>Task Priority: </label><span><input type="radio" name="priority" id="high" value="high"> High</span><span><input type="radio" name="priority" id="medium" value="medium"> Medium</span><span><input type="radio" name="priority" id="low" value="low" checked> Low</span>' + selectHolder + '<input type="submit"></form>'
 
   return todoForm;
 }
