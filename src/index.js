@@ -20,7 +20,7 @@ allToDos.push(readingTask);
 
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
 
-let getTasksList = (taskArray) => {
+let getTasksList = (taskArray = null) => {
   let myTaskList = document.querySelector('.tasks-list')
   myTaskList.innerHTML = "";
 
@@ -41,9 +41,8 @@ let getTasksList = (taskArray) => {
     taskItem.appendChild(taskDueDate);
 
     myTaskList.appendChild(taskItem);
-    displayDiv.style.display = 'block';
   }
-
+  displayDiv.style.display = 'block';
 }
 
 let innerListItemsUpdater = () => {
@@ -174,6 +173,72 @@ let getCategoryFormValues = (value = null) => {
   });
 }
 
+let getTaskFormValues = () => {
+  document.querySelector('.close-form-btn').addEventListener('click', function(e) {
+    document.querySelector('.category-form-div').style.visibility = 'hidden';
+    document.querySelector('.category-form-div').style.opacity = '0';
+  });
+
+  let taskForm = document.querySelector('.task-form');
+  taskForm.addEventListener('submit', function(e){
+    let taskTitle;
+    let taskDesc;
+    let taskDate;
+    let taskPriority;
+    let taskCatName;
+    console.log(taskForm.elements.length);
+    for(let i = 0; i < taskForm.elements.length; i += 1) {
+      switch(taskForm.elements[i].id){
+        case 'task-title':
+          taskTitle = taskForm.elements[i].value;
+          break;
+        case 'task-desc':
+          taskDesc = taskForm.elements[i].value;
+        case 'task-date':
+          taskDate = taskForm.elements[i].value;
+        case 'high':
+          if(taskForm.elements[i].checked) {
+            taskPriority = taskForm.elements[i].value
+          }
+          break;
+        case 'medium':
+          if(taskForm.elements[i].checked) {
+            taskPriority = taskForm.elements[i].value
+          }
+          break;          
+        case 'low':
+          if(taskForm.elements[i].checked) {
+            taskPriority = taskForm.elements[i].value
+          }
+          break;          
+        case 'todoCategories':
+          taskCatName = taskForm.elements[i].value;
+        default:
+      }
+    }
+
+    let newTask = task(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
+    allToDos.push(newTask);
+
+    let showingDiv = document.querySelector('.no-category-selected');
+
+    if(showingDiv.style.display === 'none') {
+      let clickedCategory = document.querySelector('.inner-list-items-active');
+      if(clickedCategory == null) {
+        getTasksList(allToDos);
+      }
+      else{
+        let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
+        getTasksList(targetArray);
+      } 
+    }
+
+    document.querySelector('.category-form-div').style.visibility = 'hidden';
+    document.querySelector('.category-form-div').style.opacity = '0';
+    e.preventDefault();
+  });
+}
+
 categoryButton.addEventListener('click', function () {
   let formDiv = document.querySelector('.category-form-div');
   formDiv.innerHTML = categoryForm();
@@ -200,3 +265,13 @@ editCategoryButton.addEventListener('click', function() {
 //Right Pane Main Code
 
 rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><div class="inner-right-section-div"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul><p class="note-par"><b>NOTE: </b>red is for high-priority, green is for medium-priority, blue is for low-priority</p></div></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
+
+let createNewTask = document.querySelector('.create-task-btn');
+
+createNewTask.addEventListener('click', function(e) {
+  let formDiv = document.querySelector('.category-form-div');
+  formDiv.innerHTML = todoItemForm(categories);
+  getTaskFormValues();
+  formDiv.style.visibility = 'visible';
+  formDiv.style.opacity = 1;
+});
