@@ -307,3 +307,7 @@ input[type="submit"] {
   cursor: pointer;
   background: linear-gradient(#555, #333);
 }
+
+.task-details-section {
+  display: none;
+}
