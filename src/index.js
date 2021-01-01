@@ -20,6 +20,13 @@ allToDos.push(readingTask);
 
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
 
+let displayTaskDetails = (element) => {
+  let upperSection = document.querySelector('.right-pane-upper-section');
+  upperSection.style.display = 'none';
+  let createNewTaskBtn = document.querySelector('.create-task-btn');
+  createNewTaskBtn.style.display = 'none';
+}
+
 let getTasksList = (taskArray = null) => {
   let myTaskList = document.querySelector('.tasks-list')
   myTaskList.innerHTML = "";
@@ -30,6 +37,9 @@ let getTasksList = (taskArray = null) => {
     let taskItem = document.createElement('li');
     taskItem.classList.add('task-list-item');
     taskItem.classList.add(taskArray[i].getPriority());
+    taskItem.addEventListener('click', function(e) {
+      displayTaskDetails(this);
+    });
 
     let taskHeading = document.createElement('h3');
     taskHeading.textContent = taskArray[i].getTaskTitle();
