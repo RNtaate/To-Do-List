@@ -190,6 +190,14 @@ let getTaskFormValues = () => {
     for(let i = 0; i < taskForm.elements.length; i += 1) {
       switch(taskForm.elements[i].id){
         case 'task-title':
+          let myArray = allToDos.filter(el => el.getTaskTitle().toLowerCase() === taskForm.elements[i].value.toLowerCase());
+          console.log(myArray.length);
+          if(myArray.length > 0) {
+            document.querySelector('.category-form-div').style.visibility = 'hidden';
+            document.querySelector('.category-form-div').style.opacity = '0';
+            e.preventDefault();
+            return alert('Task with that title is already taken, please enter a different task title');
+          }
           taskTitle = taskForm.elements[i].value;
           break;
         case 'task-desc':
@@ -264,7 +272,7 @@ editCategoryButton.addEventListener('click', function() {
 
 //Right Pane Main Code
 
-rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><div class="inner-right-section-div"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul><p class="note-par"><b>NOTE: </b>red is for high-priority, green is for medium-priority, blue is for low-priority</p></div></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button>'
+rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><div class="inner-right-section-div"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul><p class="note-par"><b>NOTE: </b>red is for high-priority, green is for medium-priority, blue is for low-priority</p></div></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button><section class="task-details-section"><button class="back-btn">Back</button><div class="task-details-div"><h2 class="task-heading"></h2><p class="task-description"></p><span class="task-date"></span><span class="task-category-name"></span><span class="task-priority"></span></div><div class="task-details-btns-div"><button class="edit-task">Edit task</button><button class="delete-task">Delete task</button></div></section>'
 
 let createNewTask = document.querySelector('.create-task-btn');
 
