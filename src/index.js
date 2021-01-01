@@ -20,11 +20,38 @@ allToDos.push(readingTask);
 
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
 
+let displayTaskInformation = (el) => {
+
+  let targetTask = allToDos.filter(obj => obj.getTaskTitle().toLowerCase() === el.children[0].textContent.toLowerCase());
+
+  targetTask = targetTask[0];
+
+  let lowerSection = document.querySelector('.task-details-section');
+  lowerSection.style.display = 'block';
+
+  let taskHeading = document.querySelector('.task-heading');
+  taskHeading.textContent = targetTask.getTaskTitle();
+
+  let taskDesc = document.querySelector('.task-description');
+  taskDesc.textContent = targetTask.getTaskDesc();
+
+  let taskDate = document.querySelector('.task-date');
+  taskDate.textContent = "Due Date: " + targetTask.getTaskDate();
+
+  let taskPriority = document.querySelector('.task-priority');
+  taskPriority.textContent = "Priority: " + targetTask.getPriority();
+
+  let taskCat = document.querySelector('.task-category-name');
+  taskCat.textContent = "Category Name: " + targetTask.getTaskCat();
+}
+
 let displayTaskDetails = (element) => {
   let upperSection = document.querySelector('.right-pane-upper-section');
   upperSection.style.display = 'none';
   let createNewTaskBtn = document.querySelector('.create-task-btn');
   createNewTaskBtn.style.display = 'none';
+
+  displayTaskInformation(element);
 }
 
 let getTasksList = (taskArray = null) => {
@@ -37,6 +64,7 @@ let getTasksList = (taskArray = null) => {
     let taskItem = document.createElement('li');
     taskItem.classList.add('task-list-item');
     taskItem.classList.add(taskArray[i].getPriority());
+    taskItem.setAttribute('title', 'Click to view task details');
     taskItem.addEventListener('click', function(e) {
       displayTaskDetails(this);
     });
