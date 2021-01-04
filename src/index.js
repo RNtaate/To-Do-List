@@ -67,7 +67,7 @@ let getTasksList = (taskArray = null) => {
     taskItem.setAttribute('title', 'Click to view task details');
     taskItem.addEventListener('click', function(e) {
       displayTaskDetails(this);
-    });
+  });
 
     let taskHeading = document.createElement('h3');
     taskHeading.textContent = taskArray[i].getTaskTitle();
@@ -81,6 +81,26 @@ let getTasksList = (taskArray = null) => {
     myTaskList.appendChild(taskItem);
   }
   displayDiv.style.display = 'block';
+}
+
+let backToListPage = () => {
+  let currentCategory = document.querySelector('.inner-list-items-active');
+  let targetArray;
+  if (currentCategory === null) {
+   getTasksList(allToDos);
+  }
+  else {
+    targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() === currentCategory.textContent.toLowerCase());
+    getTasksList(targetArray);
+  }
+
+  let upperSection = document.querySelector('.right-pane-upper-section');
+  upperSection.style.display = 'block';
+  let createNewTaskBtn = document.querySelector('.create-task-btn');
+  createNewTaskBtn.style.display = 'block';
+
+  let lowerSection = document.querySelector('.task-details-section');
+  lowerSection.style.display = 'none';
 }
 
 let innerListItemsUpdater = () => {
@@ -321,3 +341,27 @@ createNewTask.addEventListener('click', function(e) {
   formDiv.style.visibility = 'visible';
   formDiv.style.opacity = 1;
 });
+
+let backBtn = document.querySelector('.back-btn');
+
+backBtn.addEventListener('click', function(e) {
+  backToListPage();
+});
+
+
+let deleteTaskBtn = document.querySelector('.delete-task');
+
+deleteTaskBtn.addEventListener('click', function(e) {
+  if(confirm('Are you sure you want to delete this task?')) {
+    let taskHeading = document.querySelector('.task-heading').textContent;
+    for(let i = 0; i < allToDos.length; i += 1) {
+      if(allToDos[i].getTaskTitle() === taskHeading) {
+        allToDos.splice(i, 1);
+        break;
+      }
+    }
+    backToListPage();
+  }
+});
+
+
