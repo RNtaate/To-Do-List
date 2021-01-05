@@ -27,7 +27,7 @@ let displayTaskInformation = (headingName) => {
   targetTask = targetTask[0];
 
   let lowerSection = document.querySelector('.task-details-section');
-  lowerSection.style.display = 'block';
+  lowerSection.style.display = 'flex';
 
   let taskHeading = document.querySelector('.task-heading');
   taskHeading.textContent = targetTask.getTaskTitle();
