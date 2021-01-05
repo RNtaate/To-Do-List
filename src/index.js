@@ -220,6 +220,9 @@ let getCategoryFormValues = (value = null) => {
         }
       }
 
+      if(document.querySelector('.task-details-section').style.display != 'none') {
+        displayTaskDetails(document.querySelector('.task-heading').textContent);
+      }
       value.textContent = catForm.elements[0].value;
 
     }
