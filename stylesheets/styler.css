@@ -280,15 +280,18 @@ input[type="submit"] {
   text-align: center;
 }
 
-.high {
+.high,
+.delete-task {
   background-color: #df4759;
 }
 
-.low {
+.low,
+.back-btn {
   background-color: #467fd0;
 }
 
-.medium {
+.medium,
+.edit-task {
   background-color: #42ba96;
 }
 
@@ -310,4 +313,46 @@ input[type="submit"] {
 
 .task-details-section {
   display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  max-height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.back-btn,
+.edit-task,
+.delete-task {
+  width: 20%;
+  padding: 10px 0;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1.2em;
+  margin: 5px 0 0 5px;
+  border-radius: 3px;
+}
+
+.task-details-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 75%;
+  height: 60%;
+  margin: 0 auto;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.6);
+  background-color: #fff;
+}
+
+.task-description {
+  color: gray;
+}
+
+.task-details-btns-div {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
 }
