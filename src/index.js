@@ -55,6 +55,14 @@ let displayTaskDetails = (heading) => {
 }
 
 let getTasksList = (taskArray = null) => {
+  let lowerSection = document.querySelector('.task-details-section');
+  lowerSection.style.display = 'none';
+
+  let upperSection = document.querySelector('.right-pane-upper-section');
+  upperSection.style.display = 'block';
+  let createNewTaskBtn = document.querySelector('.create-task-btn');
+  createNewTaskBtn.style.display = 'block';
+
   let myTaskList = document.querySelector('.tasks-list')
   myTaskList.innerHTML = "";
 
@@ -93,14 +101,6 @@ let backToListPage = () => {
     targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() === currentCategory.textContent.toLowerCase());
     getTasksList(targetArray);
   }
-
-  let upperSection = document.querySelector('.right-pane-upper-section');
-  upperSection.style.display = 'block';
-  let createNewTaskBtn = document.querySelector('.create-task-btn');
-  createNewTaskBtn.style.display = 'block';
-
-  let lowerSection = document.querySelector('.task-details-section');
-  lowerSection.style.display = 'none';
 }
 
 let innerListItemsUpdater = () => {
@@ -303,7 +303,7 @@ let getTaskFormValues = (currentTask = null) => {
       }
     }
     else{
-      currentTask.setTask(taskTitle, taskDesc, taskDate, taskPriority, taskCatName)
+      currentTask.setTask(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
       displayTaskDetails(taskTitle);
     }
 
