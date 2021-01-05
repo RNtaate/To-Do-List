@@ -20,9 +20,9 @@ allToDos.push(readingTask);
 
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
 
-let displayTaskInformation = (el) => {
+let displayTaskInformation = (headingName) => {
 
-  let targetTask = allToDos.filter(obj => obj.getTaskTitle().toLowerCase() === el.children[0].textContent.toLowerCase());
+  let targetTask = allToDos.filter(obj => obj.getTaskTitle().toLowerCase() === headingName.toLowerCase());
 
   targetTask = targetTask[0];
 
@@ -45,13 +45,13 @@ let displayTaskInformation = (el) => {
   taskCat.textContent = "Category Name: " + targetTask.getTaskCat();
 }
 
-let displayTaskDetails = (element) => {
+let displayTaskDetails = (heading) => {
   let upperSection = document.querySelector('.right-pane-upper-section');
   upperSection.style.display = 'none';
   let createNewTaskBtn = document.querySelector('.create-task-btn');
   createNewTaskBtn.style.display = 'none';
 
-  displayTaskInformation(element);
+  displayTaskInformation(heading);
 }
 
 let getTasksList = (taskArray = null) => {
@@ -66,7 +66,7 @@ let getTasksList = (taskArray = null) => {
     taskItem.classList.add(taskArray[i].getPriority());
     taskItem.setAttribute('title', 'Click to view task details');
     taskItem.addEventListener('click', function(e) {
-      displayTaskDetails(this);
+      displayTaskDetails(this.children[0].textContent);
   });
 
     let taskHeading = document.createElement('h3');
@@ -231,7 +231,7 @@ let getCategoryFormValues = (value = null) => {
   });
 }
 
-let getTaskFormValues = () => {
+let getTaskFormValues = (currentTask = null) => {
   document.querySelector('.close-form-btn').addEventListener('click', function(e) {
     document.querySelector('.category-form-div').style.visibility = 'hidden';
     document.querySelector('.category-form-div').style.opacity = '0';
@@ -254,7 +254,9 @@ let getTaskFormValues = () => {
             document.querySelector('.category-form-div').style.visibility = 'hidden';
             document.querySelector('.category-form-div').style.opacity = '0';
             e.preventDefault();
-            return alert('Task with that title is already taken, please enter a different task title');
+            if(currentTask === null) {
+              return alert('Task with that title is already taken, please enter a different task title');
+            }
           }
           taskTitle = taskForm.elements[i].value;
           break;
@@ -283,20 +285,26 @@ let getTaskFormValues = () => {
       }
     }
 
-    let newTask = task(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
-    allToDos.push(newTask);
+    if(currentTask === null) {
+      let newTask = task(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
+      allToDos.push(newTask);
 
-    let showingDiv = document.querySelector('.no-category-selected');
+      let showingDiv = document.querySelector('.no-category-selected');
 
-    if(showingDiv.style.display === 'none') {
-      let clickedCategory = document.querySelector('.inner-list-items-active');
-      if(clickedCategory == null) {
-        getTasksList(allToDos);
+      if(showingDiv.style.display === 'none') {
+        let clickedCategory = document.querySelector('.inner-list-items-active');
+        if(clickedCategory == null) {
+          getTasksList(allToDos);
+        }
+        else{
+          let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
+          getTasksList(targetArray);
+        } 
       }
-      else{
-        let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
-        getTasksList(targetArray);
-      } 
+    }
+    else{
+      currentTask.setTask(taskTitle, taskDesc, taskDate, taskPriority, taskCatName)
+      displayTaskDetails(taskTitle);
     }
 
     document.querySelector('.category-form-div').style.visibility = 'hidden';
@@ -364,4 +372,21 @@ deleteTaskBtn.addEventListener('click', function(e) {
   }
 });
 
+let editTaskButton = document.querySelector('.edit-task');
 
+editTaskButton.addEventListener('click', function(e) {
+  let currentTaskHeading = document.querySelector('.task-heading');
+
+  for(let i = 0; i < allToDos.length; i += 1) {
+    if(currentTaskHeading.textContent === allToDos[i].getTaskTitle()) {
+      currentTaskHeading = allToDos[i];
+      break;
+    }
+  }
+
+  let formDiv = document.querySelector('.category-form-div');
+  formDiv.innerHTML = todoItemForm(categories, currentTaskHeading);
+  getTaskFormValues(currentTaskHeading);
+  formDiv.style.visibility = 'visible';
+  formDiv.style.opacity = 1;
+});
