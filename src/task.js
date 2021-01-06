@@ -1,43 +1,43 @@
-let task = (title, description, date, priority, categoryName) => {
-  let taskTitle = title;
-  let taskDesc = description;
-  let taskDate = date;
-  let taskPriority = priority;
-  let taskCat = categoryName;
-
-  let getTaskTitle = () => {
-    return taskTitle;
+class Task {
+  constructor(title, description, date, priority, categoryName) {
+    this.taskTitle = title;
+    this.taskDesc = description;
+    this.taskDate = date;
+    this.taskPriority = priority;
+    this.taskCat = categoryName;
   }
 
-  let getTaskDesc = () => {
-    return taskDesc;
+  getTaskTitle() {
+    return this.taskTitle;
   }
 
-  let getTaskDate = () => {
-    return taskDate;
+  getTaskDesc() {
+    return this.taskDesc;
   }
 
-  let setTaskCat = (catName) => {
-    taskCat = catName;
+  getTaskDate() {
+    return this.taskDate;
   }
 
-  let getTaskCat = () => {
-    return taskCat;
+  setTaskCat(catName) {
+    this.taskCat = catName;
   }
 
-  let getPriority = () => {
-    return taskPriority;
+  getTaskCat() {
+    return this.taskCat;
+  }
+
+  getPriority() {
+    return this.taskPriority;
   } 
 
-  let setTask = (title, description, date, priority, categoryName) => {
-    taskTitle = title;
-    taskDesc = description;
-    taskDate = date;
-    taskPriority = priority;
-    taskCat = categoryName;
+  setTask(title, description, date, priority, categoryName) {
+    this.taskTitle = title;
+    this.taskDesc = description;
+    this.taskDate = date;
+    this.taskPriority = priority;
+    this.taskCat = categoryName;
   }
-
-  return { getTaskTitle, getTaskDesc, getTaskCat, setTaskCat, getPriority, getTaskDate, setTask };
 }
 
-export default task;
+export default Task;

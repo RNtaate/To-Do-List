@@ -1,16 +1,15 @@
-const category = (name) => {
-  let myName = name;
-
-  const getName = () => {
-    return myName;
+class Category {
+  constructor(name) {
+    this.myName = name;
   }
 
-  const setName = (anotherName) => {
-    myName = anotherName;
+  getName() {
+    return this.myName;
   }
-  
-  return{getName, setName};
 
+  setName(anotherName) {
+    this.myName = anotherName;
+  }
 }
 
-export default category;
+export default Category;
