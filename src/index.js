@@ -1,6 +1,6 @@
-import category from './category';
+import Category from './category';
 import { categoryForm, capitalize, todoItemForm } from './forms';
-import task from './task';
+import Task from './task';
 
 let body = document.querySelector('body');
 let catForm;
@@ -8,17 +8,17 @@ let catForm;
 let categories = [];
 let allToDos = [];
 
+const CATEGORIES_KEY = 'myCategories';
+const TODOS_KEY = 'myToDos';
+
 let leftPaneDiv = document.querySelector('.left-pane-div');
 let rightPaneDiv = document.querySelector('.right-pane-div');
 
-
-let dummyTask = task('Dummy Task', 'This is a dummy task', '2020/12/30', 'high', 'Uncategorised');
-let readingTask = task('Reading Task', 'This is a dummy task', '2020/12/30', 'low', 'Reading');
-allToDos.push(dummyTask);
-allToDos.push(readingTask);
-
-
 leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
+
+let saveDataToStorage = (key, arr) => {
+  localStorage.setItem(key, JSON.stringify(arr));
+}
 
 let displayTaskInformation = (headingName) => {
 
@@ -177,16 +177,40 @@ myDiv.classList.add('category-form-div');
 body.appendChild(myDiv);
 
 let addNewCategoryToList = (name) => {
-  let newCategory = category(name);
+  let newCategory = new Category(name);
   categories.push(newCategory);
+  saveDataToStorage(CATEGORIES_KEY, categories);
   let newListCategory = document.createElement('li');
   newListCategory.classList.add('inner-list-items');
   newListCategory.textContent = newCategory.getName();
   document.querySelector('.inner-item-list').appendChild(newListCategory);
 }
 
-addNewCategoryToList('Uncategorised');
-addNewCategoryToList('Reading');
+// Get the already stored tasks and categories from local Storage.
+
+if(localStorage.getItem(TODOS_KEY)) {
+  let storedTasks = JSON.parse(localStorage.getItem(TODOS_KEY));
+  let holdingTask;
+  for(let j = 0; j < storedTasks.length; j += 1) {
+    holdingTask = new Task(storedTasks[j].taskTitle, storedTasks[j].taskDesc, storedTasks[j].taskDate, storedTasks[j].taskPriority, storedTasks[j].taskCat);
+    allToDos.push(holdingTask);
+  }
+}
+
+if (localStorage.getItem(CATEGORIES_KEY)) {
+  let storedCategories = JSON.parse(localStorage.getItem(CATEGORIES_KEY));
+  let singleCategory;
+  for(let i = 0; i < storedCategories.length; i += 1) {
+    addNewCategoryToList(storedCategories[i].myName);
+  }
+  console.log(categories[0].getName());
+}
+else{
+  addNewCategoryToList('Uncategorised');
+}
+
+// End of obtaining localStorage Data.
+
 
 let getCategoryFormValues = (value = null) => {
   catForm = document.querySelector('.category-form');
@@ -213,11 +237,13 @@ let getCategoryFormValues = (value = null) => {
           break;
         }
       }
+      saveDataToStorage(CATEGORIES_KEY, categories);
 
       for (let j = 0; j < allToDos.length; j += 1) {
         if (allToDos[j].getTaskCat() === value.textContent) {
           allToDos[j].setTaskCat(catForm.elements[0].value);
         }
+        console.log('I am being looped');
       }
 
       if (document.querySelector('.task-details-section').style.display != 'none') {
@@ -289,8 +315,9 @@ let getTaskFormValues = (currentTask = null) => {
     }
 
     if (currentTask === null) {
-      let newTask = task(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
+      let newTask = new Task(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
       allToDos.push(newTask);
+      saveDataToStorage(TODOS_KEY, allToDos);
 
       let showingDiv = document.querySelector('.no-category-selected');
 
@@ -307,6 +334,7 @@ let getTaskFormValues = (currentTask = null) => {
     }
     else {
       currentTask.setTask(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
+      saveDataToStorage(TODOS_KEY, allToDos);
       displayTaskDetails(taskTitle);
     }
 
@@ -354,11 +382,18 @@ deleteCategoryButton.addEventListener('click', function () {
       for (let j = 0; j < categories.length; j += 1) {
         if (categories[j].getName().toLowerCase() === targetCategoryName.textContent.toLowerCase()) {
           categories.splice(j, 1);
+          break;
         }
       }
+      saveDataToStorage(CATEGORIES_KEY, categories);
+      saveDataToStorage(TODOS_KEY, allToDos);
+
       targetCategoryName.remove();
       document.querySelector('.inner-right-section-div').style.display = 'none';
       document.querySelector('.no-category-selected').style.display = 'block';
+      document.querySelector('.task-details-section').style.display = 'none';
+      document.querySelector('.right-pane-upper-section').style.display = 'block';
+      document.querySelector('.create-task-btn').style.display='block';
       innerListItemsUpdater();
     }
     else {
