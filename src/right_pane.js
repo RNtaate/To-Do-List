@@ -4,4 +4,76 @@ let rightPaneComponents = () => {
   return elementString;
 }
 
-export default rightPaneComponents;
+let displayTaskInformation = (headingName, arr) => {
+
+  let targetTask = arr.filter(obj => obj.getTaskTitle().toLowerCase() === headingName.toLowerCase());
+
+  targetTask = targetTask[0];
+
+  let lowerSection = document.querySelector('.task-details-section');
+  lowerSection.style.display = 'flex';
+
+  let taskHeading = document.querySelector('.task-heading');
+  taskHeading.textContent = targetTask.getTaskTitle();
+
+  let taskDesc = document.querySelector('.task-description');
+  taskDesc.textContent = targetTask.getTaskDesc();
+
+  let taskDate = document.querySelector('.task-date');
+  taskDate.textContent = "Due Date: " + targetTask.getTaskDate();
+
+  let taskPriority = document.querySelector('.task-priority');
+  taskPriority.textContent = "Priority: " + targetTask.getPriority();
+
+  let taskCat = document.querySelector('.task-category-name');
+  taskCat.textContent = "Category Name: " + targetTask.getTaskCat();
+}
+
+let displayTaskDetails = (heading, arr) => {
+  let upperSection = document.querySelector('.right-pane-upper-section');
+  upperSection.style.display = 'none';
+  let createNewTaskBtn = document.querySelector('.create-task-btn');
+  createNewTaskBtn.style.display = 'none';
+
+  displayTaskInformation(heading, arr);
+}
+
+let getTasksList = (taskArray = null, fullTaskArray) => {
+  let lowerSection = document.querySelector('.task-details-section');
+  lowerSection.style.display = 'none';
+
+  let upperSection = document.querySelector('.right-pane-upper-section');
+  upperSection.style.display = 'block';
+  let createNewTaskBtn = document.querySelector('.create-task-btn');
+  createNewTaskBtn.style.display = 'block';
+
+  let myTaskList = document.querySelector('.tasks-list')
+  myTaskList.innerHTML = "";
+
+  let displayDiv = document.querySelector('.inner-right-section-div');
+
+  for (let i = 0; i < taskArray.length; i += 1) {
+    let taskItem = document.createElement('li');
+    taskItem.classList.add('task-list-item');
+    taskItem.classList.add(taskArray[i].getPriority());
+    taskItem.setAttribute('title', 'Click to view task details');
+    taskItem.addEventListener('click', function (e) {
+      displayTaskDetails(this.children[0].textContent, fullTaskArray);
+    });
+
+    let taskHeading = document.createElement('h3');
+    taskHeading.textContent = taskArray[i].getTaskTitle();
+
+    let taskDueDate = document.createElement('span');
+    taskDueDate.textContent = "Due Date: " + taskArray[i].getTaskDate();
+
+    taskItem.appendChild(taskHeading);
+    taskItem.appendChild(taskDueDate);
+
+    myTaskList.appendChild(taskItem);
+  }
+  displayDiv.style.display = 'block';
+}
+
+
+export { rightPaneComponents, displayTaskDetails, getTasksList };
