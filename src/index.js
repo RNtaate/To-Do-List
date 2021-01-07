@@ -1,6 +1,8 @@
 import Category from './category';
 import { categoryForm, capitalize, todoItemForm } from './forms';
 import Task from './task';
+import leftPaneComponent from './left_pane';
+import rightPaneComponents from './right_pane';
 
 let body = document.querySelector('body');
 let catForm;
@@ -14,7 +16,8 @@ const TODOS_KEY = 'myToDos';
 let leftPaneDiv = document.querySelector('.left-pane-div');
 let rightPaneDiv = document.querySelector('.right-pane-div');
 
-leftPaneDiv.innerHTML = '<ul><li class="outer-list-items"><span>All</span></li><li class="outer-list-items category-list"><span>Categories<i class="fa fa-caret-down"></i></span><ul class="inner-item-list"></ul></li></ul><div class="category-btns"><button class="new-category-btn">Create New Category</button><div class="edit-delete-category-div"><button class="edit-category-btn">Edit Category</button><button class="delete-category-btn">Delete Category</button></div></div>';
+leftPaneDiv.innerHTML = leftPaneComponent();
+rightPaneDiv.innerHTML = rightPaneComponents();
 
 let saveDataToStorage = (key, arr) => {
   localStorage.setItem(key, JSON.stringify(arr));
@@ -404,8 +407,6 @@ deleteCategoryButton.addEventListener('click', function () {
 
 
 //Right Pane Main Code
-
-rightPaneDiv.innerHTML = '<section class="right-pane-upper-section"><div class="inner-right-section-div"><h2 class="category-heading"></h2><div class="category-tasks-div"><ul class="tasks-list"></ul><p class="note-par"><b>NOTE: </b>red is for high-priority, green is for medium-priority, blue is for low-priority</p></div></div><h2 class="no-category-selected">Select a Category or click "All" on your left to view created tasks here.</h2></section><button class="create-task-btn">Create new Task</button><section class="task-details-section"><button class="back-btn">Back</button><div class="task-details-div"><h2 class="task-heading"></h2><p class="task-description"></p><span class="task-date"></span><span class="task-category-name"></span><span class="task-priority"></span></div><div class="task-details-btns-div"><button class="edit-task">Edit task</button><button class="delete-task">Delete task</button></div></section>'
 
 let createNewTask = document.querySelector('.create-task-btn');
 
