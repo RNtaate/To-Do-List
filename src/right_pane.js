@@ -147,7 +147,7 @@ let getTaskFormValues = (currentTask = null, divElement, taskFormClass, fullTask
           getTasksList(fullTaskArray, fullTaskArray);
         }
         else {
-          let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
+          let targetArray = fullTaskArray.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
           getTasksList(targetArray, fullTaskArray);
         }
       }
