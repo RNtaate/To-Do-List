@@ -1,8 +1,9 @@
 import Category from './category';
 import { categoryForm, capitalize, todoItemForm } from './forms';
 import Task from './task';
-import { leftPaneComponent, saveDataToStorage, addNewCategoryToList } from './left_pane';
-import { rightPaneComponents, displayTaskDetails, getTasksList } from './right_pane';
+import saveDataToStorage from './local_storage';
+import { leftPaneComponent, addNewCategoryToList, getCategoryFormValues, innerListItemsUpdater } from './left_pane';
+import { rightPaneComponents, displayTaskDetails, getTasksList, getTaskFormValues } from './right_pane';
 
 let body = document.querySelector('body');
 let catForm;
@@ -56,29 +57,6 @@ let backToListPage = () => {
   }
 }
 
-let innerListItemsUpdater = () => {
-  let listItems = document.querySelectorAll('.inner-list-items');
-  for (let i = 0; i < listItems.length; i += 1) {
-    listItems[i].addEventListener('click', function (e) {
-      let updatedListItems = document.querySelectorAll('.inner-list-items');
-      for (let j = 0; j < updatedListItems.length; j += 1) {
-        updatedListItems[j].classList.remove('inner-list-items-active');
-      }
-
-      e.target.classList.add('inner-list-items-active');
-      document.querySelector('.edit-delete-category-div').style.display = 'flex';
-      document.querySelector('.no-category-selected').style.display = 'none';
-      document.querySelector('.category-heading').textContent = e.target.textContent;
-
-      let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() === e.target.textContent.toLowerCase());
-
-      getTasksList(targetArray, allToDos);
-
-    });
-  }
-}
-
-
 let outerListItems = document.querySelectorAll('.outer-list-items > span');
 for (let i = 0; i < outerListItems.length; i += 1) {
   outerListItems[i].addEventListener('click', function (e) {
@@ -112,7 +90,7 @@ for (let i = 0; i < outerListItems.length; i += 1) {
       case 'Categories':
         document.querySelector('.inner-item-list').classList.toggle('appear');
         e.target.children[0].classList.toggle('selected');
-        innerListItemsUpdater();
+        innerListItemsUpdater('no-category-selected', 'category-heading', allToDos);
         break;
 
       default:
@@ -120,145 +98,13 @@ for (let i = 0; i < outerListItems.length; i += 1) {
   });
 }
 
-let categoryButton = document.querySelector('.new-category-btn');
-
 let myDiv = document.createElement('div');
 myDiv.classList.add('category-form-div');
 
 body.appendChild(myDiv);
 
 
-let getCategoryFormValues = (value = null) => {
-  catForm = document.querySelector('.category-form');
-
-  document.querySelector('.close-form-btn').addEventListener('click', function (e) {
-    document.querySelector('.category-form-div').style.visibility = 'hidden';
-    document.querySelector('.category-form-div').style.opacity = '0';
-  });
-
-  catForm.addEventListener('submit', function (e) {
-    let myName = catForm.elements[0].value;
-    if (value === null) {
-      addNewCategoryToList(myName, categories, CATEGORIES_KEY);
-    }
-    else {
-
-      for (let i = 0; i < categories.length; i += 1) {
-        if (categories[i].getName() === value.textContent) {
-          categories[i].setName(catForm.elements[0].value);
-          let categoryHeading = document.querySelector('.category-heading');
-          if (categoryHeading.textContent === value.textContent) {
-            categoryHeading.textContent = catForm.elements[0].value;
-          }
-          break;
-        }
-      }
-      saveDataToStorage(CATEGORIES_KEY, categories);
-
-      for (let j = 0; j < allToDos.length; j += 1) {
-        if (allToDos[j].getTaskCat() === value.textContent) {
-          allToDos[j].setTaskCat(catForm.elements[0].value);
-        }
-        console.log('I am being looped');
-      }
-
-      if (document.querySelector('.task-details-section').style.display != 'none') {
-        displayTaskDetails(document.querySelector('.task-heading').textContent, allToDos);
-      }
-      value.textContent = catForm.elements[0].value;
-
-    }
-    catForm.reset();
-    document.querySelector('.category-form-div').style.visibility = 'hidden';
-    document.querySelector('.category-form-div').style.opacity = '0';
-    innerListItemsUpdater();
-    e.preventDefault();
-  });
-}
-
-let getTaskFormValues = (currentTask = null) => {
-  document.querySelector('.close-form-btn').addEventListener('click', function (e) {
-    document.querySelector('.category-form-div').style.visibility = 'hidden';
-    document.querySelector('.category-form-div').style.opacity = '0';
-  });
-
-  let taskForm = document.querySelector('.task-form');
-  taskForm.addEventListener('submit', function (e) {
-    let taskTitle;
-    let taskDesc;
-    let taskDate;
-    let taskPriority;
-    let taskCatName;
-    console.log(taskForm.elements.length);
-    for (let i = 0; i < taskForm.elements.length; i += 1) {
-      switch (taskForm.elements[i].id) {
-        case 'task-title':
-          let myArray = allToDos.filter(el => el.getTaskTitle().toLowerCase() === taskForm.elements[i].value.toLowerCase());
-          console.log(myArray.length);
-          if (myArray.length > 0) {
-            document.querySelector('.category-form-div').style.visibility = 'hidden';
-            document.querySelector('.category-form-div').style.opacity = '0';
-            e.preventDefault();
-            if (currentTask === null) {
-              return alert('Task with that title is already taken, please enter a different task title');
-            }
-          }
-          taskTitle = taskForm.elements[i].value;
-          break;
-        case 'task-desc':
-          taskDesc = taskForm.elements[i].value;
-        case 'task-date':
-          taskDate = taskForm.elements[i].value;
-        case 'high':
-          if (taskForm.elements[i].checked) {
-            taskPriority = taskForm.elements[i].value
-          }
-          break;
-        case 'medium':
-          if (taskForm.elements[i].checked) {
-            taskPriority = taskForm.elements[i].value
-          }
-          break;
-        case 'low':
-          if (taskForm.elements[i].checked) {
-            taskPriority = taskForm.elements[i].value
-          }
-          break;
-        case 'todoCategories':
-          taskCatName = taskForm.elements[i].value;
-        default:
-      }
-    }
-
-    if (currentTask === null) {
-      let newTask = new Task(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
-      allToDos.push(newTask);
-      saveDataToStorage(TODOS_KEY, allToDos);
-
-      let showingDiv = document.querySelector('.no-category-selected');
-
-      if (showingDiv.style.display === 'none') {
-        let clickedCategory = document.querySelector('.inner-list-items-active');
-        if (clickedCategory == null) {
-          getTasksList(allToDos, allToDos);
-        }
-        else {
-          let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
-          getTasksList(targetArray, allToDos);
-        }
-      }
-    }
-    else {
-      currentTask.setTask(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
-      saveDataToStorage(TODOS_KEY, allToDos);
-      displayTaskDetails(taskTitle, allToDos);
-    }
-
-    document.querySelector('.category-form-div').style.visibility = 'hidden';
-    document.querySelector('.category-form-div').style.opacity = '0';
-    e.preventDefault();
-  });
-}
+// Method to assist in creating or editing a "Category".
 
 let createOrEditCategory = (formDiv, selectedCategory = null) => {
   if (selectedCategory === null) {
@@ -267,16 +113,39 @@ let createOrEditCategory = (formDiv, selectedCategory = null) => {
     formDiv.innerHTML = categoryForm(selectedCategory.textContent);
   }
 
-  getCategoryFormValues(selectedCategory);
+  getCategoryFormValues(selectedCategory, 'category-form', myDiv, categories, CATEGORIES_KEY, allToDos, 'no-category-selected', 'category-heading', 'task-details-section', 'task-heading' );
 
   formDiv.style.visibility = 'visible';
   formDiv.style.opacity = 1;
 }
 
 
+// Method to assist in creating or editing a "Task".
+
+let createOrEditTask = (formDiv, currentTaskHeading = null, categoriesArray) => {
+  if(currentTaskHeading === null) {
+    formDiv.innerHTML = todoItemForm(categoriesArray);
+  }
+  else {
+    formDiv.innerHTML = todoItemForm(categoriesArray, currentTaskHeading);
+  }
+ 
+  getTaskFormValues(currentTaskHeading, formDiv, 'task-form', allToDos, TODOS_KEY);
+  formDiv.style.visibility = 'visible';
+  formDiv.style.opacity = 1;
+}
+
+
+//Creating a category
+
+let categoryButton = document.querySelector('.new-category-btn');
+
 categoryButton.addEventListener('click', function () {
   createOrEditCategory(myDiv);
 });
+
+
+// Editing a category
 
 let editCategoryButton = document.querySelector('.edit-category-btn');
 
@@ -284,6 +153,9 @@ editCategoryButton.addEventListener('click', function () {
   let selectedCategory = document.querySelector('.inner-list-items-active');
   createOrEditCategory(myDiv, selectedCategory);
 });
+
+
+// Deleting a category
 
 let deleteCategoryButton = document.querySelector('.delete-category-btn');
 
@@ -313,7 +185,7 @@ deleteCategoryButton.addEventListener('click', function () {
       document.querySelector('.task-details-section').style.display = 'none';
       document.querySelector('.right-pane-upper-section').style.display = 'block';
       document.querySelector('.create-task-btn').style.display = 'block';
-      innerListItemsUpdater();
+      innerListItemsUpdater('no-category-selected', 'category-heading', allToDos);
     }
     else {
       alert('YOU ARE NOT ALLOWED TO DELETE THIS CATEGORY!');
@@ -322,39 +194,17 @@ deleteCategoryButton.addEventListener('click', function () {
 });
 
 
-//Right Pane Main Code
+// Creating a new Task
 
 let createNewTask = document.querySelector('.create-task-btn');
 
 createNewTask.addEventListener('click', function (e) {
-  let formDiv = document.querySelector('.category-form-div');
-  formDiv.innerHTML = todoItemForm(categories);
-  getTaskFormValues();
-  formDiv.style.visibility = 'visible';
-  formDiv.style.opacity = 1;
-});
 
-let backBtn = document.querySelector('.back-btn');
-
-backBtn.addEventListener('click', function (e) {
-  backToListPage();
+  createOrEditTask(myDiv, null, categories)
 });
 
 
-let deleteTaskBtn = document.querySelector('.delete-task');
-
-deleteTaskBtn.addEventListener('click', function (e) {
-  if (confirm('Are you sure you want to delete this task?')) {
-    let taskHeading = document.querySelector('.task-heading').textContent;
-    for (let i = 0; i < allToDos.length; i += 1) {
-      if (allToDos[i].getTaskTitle() === taskHeading) {
-        allToDos.splice(i, 1);
-        break;
-      }
-    }
-    backToListPage();
-  }
-});
+// Editing a new Task
 
 let editTaskButton = document.querySelector('.edit-task');
 
@@ -368,9 +218,29 @@ editTaskButton.addEventListener('click', function (e) {
     }
   }
 
-  let formDiv = document.querySelector('.category-form-div');
-  formDiv.innerHTML = todoItemForm(categories, currentTaskHeading);
-  getTaskFormValues(currentTaskHeading);
-  formDiv.style.visibility = 'visible';
-  formDiv.style.opacity = 1;
+  createOrEditTask(myDiv, currentTaskHeading, categories)
+});
+
+// functionality for the "back button" seen on task details page.
+
+let backBtn = document.querySelector('.back-btn');
+
+backBtn.addEventListener('click', function (e) {
+  backToListPage();
+});
+
+// Deleting a task
+let deleteTaskBtn = document.querySelector('.delete-task');
+
+deleteTaskBtn.addEventListener('click', function (e) {
+  if (confirm('Are you sure you want to delete this task?')) {
+    let taskHeading = document.querySelector('.task-heading').textContent;
+    for (let i = 0; i < allToDos.length; i += 1) {
+      if (allToDos[i].getTaskTitle() === taskHeading) {
+        allToDos.splice(i, 1);
+        break;
+      }
+    }
+    backToListPage();
+  }
 });
