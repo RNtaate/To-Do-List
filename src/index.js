@@ -1,8 +1,8 @@
 import Category from './category';
 import { categoryForm, capitalize, todoItemForm } from './forms';
 import Task from './task';
-import leftPaneComponent from './left_pane';
-import rightPaneComponents from './right_pane';
+import { leftPaneComponent, saveDataToStorage, addNewCategoryToList } from './left_pane';
+import { rightPaneComponents, displayTaskDetails, getTasksList } from './right_pane';
 
 let body = document.querySelector('body');
 let catForm;
@@ -19,90 +19,40 @@ let rightPaneDiv = document.querySelector('.right-pane-div');
 leftPaneDiv.innerHTML = leftPaneComponent();
 rightPaneDiv.innerHTML = rightPaneComponents();
 
-let saveDataToStorage = (key, arr) => {
-  localStorage.setItem(key, JSON.stringify(arr));
-}
+// Get the already stored tasks and categories from local Storage.
 
-let displayTaskInformation = (headingName) => {
-
-  let targetTask = allToDos.filter(obj => obj.getTaskTitle().toLowerCase() === headingName.toLowerCase());
-
-  targetTask = targetTask[0];
-
-  let lowerSection = document.querySelector('.task-details-section');
-  lowerSection.style.display = 'flex';
-
-  let taskHeading = document.querySelector('.task-heading');
-  taskHeading.textContent = targetTask.getTaskTitle();
-
-  let taskDesc = document.querySelector('.task-description');
-  taskDesc.textContent = targetTask.getTaskDesc();
-
-  let taskDate = document.querySelector('.task-date');
-  taskDate.textContent = "Due Date: " + targetTask.getTaskDate();
-
-  let taskPriority = document.querySelector('.task-priority');
-  taskPriority.textContent = "Priority: " + targetTask.getPriority();
-
-  let taskCat = document.querySelector('.task-category-name');
-  taskCat.textContent = "Category Name: " + targetTask.getTaskCat();
-}
-
-let displayTaskDetails = (heading) => {
-  let upperSection = document.querySelector('.right-pane-upper-section');
-  upperSection.style.display = 'none';
-  let createNewTaskBtn = document.querySelector('.create-task-btn');
-  createNewTaskBtn.style.display = 'none';
-
-  displayTaskInformation(heading);
-}
-
-let getTasksList = (taskArray = null) => {
-  let lowerSection = document.querySelector('.task-details-section');
-  lowerSection.style.display = 'none';
-
-  let upperSection = document.querySelector('.right-pane-upper-section');
-  upperSection.style.display = 'block';
-  let createNewTaskBtn = document.querySelector('.create-task-btn');
-  createNewTaskBtn.style.display = 'block';
-
-  let myTaskList = document.querySelector('.tasks-list')
-  myTaskList.innerHTML = "";
-
-  let displayDiv = document.querySelector('.inner-right-section-div');
-
-  for (let i = 0; i < taskArray.length; i += 1) {
-    let taskItem = document.createElement('li');
-    taskItem.classList.add('task-list-item');
-    taskItem.classList.add(taskArray[i].getPriority());
-    taskItem.setAttribute('title', 'Click to view task details');
-    taskItem.addEventListener('click', function (e) {
-      displayTaskDetails(this.children[0].textContent);
-    });
-
-    let taskHeading = document.createElement('h3');
-    taskHeading.textContent = taskArray[i].getTaskTitle();
-
-    let taskDueDate = document.createElement('span');
-    taskDueDate.textContent = "Due Date: " + taskArray[i].getTaskDate();
-
-    taskItem.appendChild(taskHeading);
-    taskItem.appendChild(taskDueDate);
-
-    myTaskList.appendChild(taskItem);
+if (localStorage.getItem(TODOS_KEY)) {
+  let storedTasks = JSON.parse(localStorage.getItem(TODOS_KEY));
+  let holdingTask;
+  for (let j = 0; j < storedTasks.length; j += 1) {
+    holdingTask = new Task(storedTasks[j].taskTitle, storedTasks[j].taskDesc, storedTasks[j].taskDate, storedTasks[j].taskPriority, storedTasks[j].taskCat);
+    allToDos.push(holdingTask);
   }
-  displayDiv.style.display = 'block';
 }
+
+if (localStorage.getItem(CATEGORIES_KEY)) {
+  let storedCategories = JSON.parse(localStorage.getItem(CATEGORIES_KEY));
+  let singleCategory;
+  for (let i = 0; i < storedCategories.length; i += 1) {
+    addNewCategoryToList(storedCategories[i].myName, categories, CATEGORIES_KEY);
+  }
+  console.log(categories[0].getName());
+}
+else {
+  addNewCategoryToList('Uncategorised', categories, CATEGORIES_KEY);
+}
+
+// End of obtaining localStorage Data.
 
 let backToListPage = () => {
   let currentCategory = document.querySelector('.inner-list-items-active');
   let targetArray;
   if (currentCategory === null) {
-    getTasksList(allToDos);
+    getTasksList(allToDos, allToDos);
   }
   else {
     targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() === currentCategory.textContent.toLowerCase());
-    getTasksList(targetArray);
+    getTasksList(targetArray, allToDos);
   }
 }
 
@@ -122,7 +72,7 @@ let innerListItemsUpdater = () => {
 
       let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() === e.target.textContent.toLowerCase());
 
-      getTasksList(targetArray);
+      getTasksList(targetArray, allToDos);
 
     });
   }
@@ -156,7 +106,7 @@ for (let i = 0; i < outerListItems.length; i += 1) {
           selectedInnerList.classList.remove('inner-list-items-active');
         }
 
-        getTasksList(allToDos);
+        getTasksList(allToDos, allToDos);
         break;
 
       case 'Categories':
@@ -171,48 +121,11 @@ for (let i = 0; i < outerListItems.length; i += 1) {
 }
 
 let categoryButton = document.querySelector('.new-category-btn');
-console.log(categoryButton.textContent);
-
 
 let myDiv = document.createElement('div');
 myDiv.classList.add('category-form-div');
 
 body.appendChild(myDiv);
-
-let addNewCategoryToList = (name) => {
-  let newCategory = new Category(name);
-  categories.push(newCategory);
-  saveDataToStorage(CATEGORIES_KEY, categories);
-  let newListCategory = document.createElement('li');
-  newListCategory.classList.add('inner-list-items');
-  newListCategory.textContent = newCategory.getName();
-  document.querySelector('.inner-item-list').appendChild(newListCategory);
-}
-
-// Get the already stored tasks and categories from local Storage.
-
-if(localStorage.getItem(TODOS_KEY)) {
-  let storedTasks = JSON.parse(localStorage.getItem(TODOS_KEY));
-  let holdingTask;
-  for(let j = 0; j < storedTasks.length; j += 1) {
-    holdingTask = new Task(storedTasks[j].taskTitle, storedTasks[j].taskDesc, storedTasks[j].taskDate, storedTasks[j].taskPriority, storedTasks[j].taskCat);
-    allToDos.push(holdingTask);
-  }
-}
-
-if (localStorage.getItem(CATEGORIES_KEY)) {
-  let storedCategories = JSON.parse(localStorage.getItem(CATEGORIES_KEY));
-  let singleCategory;
-  for(let i = 0; i < storedCategories.length; i += 1) {
-    addNewCategoryToList(storedCategories[i].myName);
-  }
-  console.log(categories[0].getName());
-}
-else{
-  addNewCategoryToList('Uncategorised');
-}
-
-// End of obtaining localStorage Data.
 
 
 let getCategoryFormValues = (value = null) => {
@@ -226,7 +139,7 @@ let getCategoryFormValues = (value = null) => {
   catForm.addEventListener('submit', function (e) {
     let myName = catForm.elements[0].value;
     if (value === null) {
-      addNewCategoryToList(myName);
+      addNewCategoryToList(myName, categories, CATEGORIES_KEY);
     }
     else {
 
@@ -250,7 +163,7 @@ let getCategoryFormValues = (value = null) => {
       }
 
       if (document.querySelector('.task-details-section').style.display != 'none') {
-        displayTaskDetails(document.querySelector('.task-heading').textContent);
+        displayTaskDetails(document.querySelector('.task-heading').textContent, allToDos);
       }
       value.textContent = catForm.elements[0].value;
 
@@ -327,18 +240,18 @@ let getTaskFormValues = (currentTask = null) => {
       if (showingDiv.style.display === 'none') {
         let clickedCategory = document.querySelector('.inner-list-items-active');
         if (clickedCategory == null) {
-          getTasksList(allToDos);
+          getTasksList(allToDos, allToDos);
         }
         else {
           let targetArray = allToDos.filter(el => el.getTaskCat().toLowerCase() == clickedCategory.textContent.toLowerCase());
-          getTasksList(targetArray);
+          getTasksList(targetArray, allToDos);
         }
       }
     }
     else {
       currentTask.setTask(taskTitle, taskDesc, taskDate, taskPriority, taskCatName);
       saveDataToStorage(TODOS_KEY, allToDos);
-      displayTaskDetails(taskTitle);
+      displayTaskDetails(taskTitle, allToDos);
     }
 
     document.querySelector('.category-form-div').style.visibility = 'hidden';
@@ -347,26 +260,29 @@ let getTaskFormValues = (currentTask = null) => {
   });
 }
 
-categoryButton.addEventListener('click', function () {
-  let formDiv = document.querySelector('.category-form-div');
-  formDiv.innerHTML = categoryForm();
-  getCategoryFormValues();
-  formDiv.style.visibility = 'visible';
-  formDiv.style.opacity = 1;
-});
-
-let editCategoryButton = document.querySelector('.edit-category-btn');
-
-editCategoryButton.addEventListener('click', function () {
-
-  let selectedCategory = document.querySelector('.inner-list-items-active');
-  let formDiv = document.querySelector('.category-form-div');
-  formDiv.innerHTML = categoryForm(selectedCategory.textContent);
+let createOrEditCategory = (formDiv, selectedCategory = null) => {
+  if (selectedCategory === null) {
+    formDiv.innerHTML = categoryForm();
+  } else {
+    formDiv.innerHTML = categoryForm(selectedCategory.textContent);
+  }
 
   getCategoryFormValues(selectedCategory);
 
   formDiv.style.visibility = 'visible';
   formDiv.style.opacity = 1;
+}
+
+
+categoryButton.addEventListener('click', function () {
+  createOrEditCategory(myDiv);
+});
+
+let editCategoryButton = document.querySelector('.edit-category-btn');
+
+editCategoryButton.addEventListener('click', function () {
+  let selectedCategory = document.querySelector('.inner-list-items-active');
+  createOrEditCategory(myDiv, selectedCategory);
 });
 
 let deleteCategoryButton = document.querySelector('.delete-category-btn');
@@ -396,7 +312,7 @@ deleteCategoryButton.addEventListener('click', function () {
       document.querySelector('.no-category-selected').style.display = 'block';
       document.querySelector('.task-details-section').style.display = 'none';
       document.querySelector('.right-pane-upper-section').style.display = 'block';
-      document.querySelector('.create-task-btn').style.display='block';
+      document.querySelector('.create-task-btn').style.display = 'block';
       innerListItemsUpdater();
     }
     else {
