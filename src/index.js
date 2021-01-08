@@ -191,6 +191,8 @@ deleteCategoryButton.addEventListener('click', () => {
       document.querySelector('.task-details-section').style.display = 'none';
       document.querySelector('.right-pane-upper-section').style.display = 'block';
       document.querySelector('.create-task-btn').style.display = 'block';
+      document.querySelector('.create-task-btn').style.display = 'block';
+      document.querySelector('.edit-delete-category-div').style.display = 'none';
       innerListItemsUpdater('no-category-selected', 'category-heading', allToDos);
     } else {
       myAlert('YOU ARE NOT ALLOWED TO DELETE THIS CATEGORY!');
