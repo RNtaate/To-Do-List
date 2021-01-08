@@ -164,7 +164,7 @@ editCategoryButton.addEventListener('click', () => {
 const deleteCategoryButton = document.querySelector('.delete-category-btn');
 
 deleteCategoryButton.addEventListener('click', () => {
-  myConfirm('Are you sure you want to delete this category ?', function(){
+  myConfirm('Are you sure you want to delete this category ?', () => {
     const targetCategoryName = document.querySelector('.inner-list-items-active');
     if (targetCategoryName.textContent !== categories[0].getName()) {
       for (let i = 0; i < allToDos.length; i += 1) {
@@ -237,7 +237,7 @@ backBtn.addEventListener('click', () => {
 const deleteTaskBtn = document.querySelector('.delete-task');
 
 deleteTaskBtn.addEventListener('click', () => {
-  myConfirm('Are you sure you want to delete this task?', function(){
+  myConfirm('Are you sure you want to delete this task?', () => {
     const taskHeading = document.querySelector('.task-heading').textContent;
     for (let i = 0; i < allToDos.length; i += 1) {
       if (allToDos[i].getTaskTitle() === taskHeading) {
@@ -245,6 +245,7 @@ deleteTaskBtn.addEventListener('click', () => {
         break;
       }
     }
+    saveDataToStorage(TODOS_KEY, allToDos);
     backToListPage();
   });
 });
