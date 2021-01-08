@@ -4,9 +4,9 @@ The Todo List demonstrates the Authors' understanding of dynamically creating ob
 
 1. View and edit all categories.
 
-1. View and edit all todo/tasks in each categories 
+1. View and edit all todos/tasks in each category 
 
-1. Click a single todo/task to see/edit its details
+1. Click a single todo/task to see or edit its details
 
 1. Create and Delete a category.
 
