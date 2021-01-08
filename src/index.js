@@ -7,6 +7,7 @@ import {
 import {
   rightPaneComponents, getTasksList, getTaskFormValues,
 } from './right_pane';
+import { myAlert, myConfirm } from './alert_messages';
 
 const body = document.querySelector('body');
 
@@ -163,7 +164,7 @@ editCategoryButton.addEventListener('click', () => {
 const deleteCategoryButton = document.querySelector('.delete-category-btn');
 
 deleteCategoryButton.addEventListener('click', () => {
-  if (confirm('Are you sure you want to delete this category ?')) {
+  myConfirm('Are you sure you want to delete this category ?', function(){
     const targetCategoryName = document.querySelector('.inner-list-items-active');
     if (targetCategoryName.textContent !== categories[0].getName()) {
       for (let i = 0; i < allToDos.length; i += 1) {
@@ -192,9 +193,9 @@ deleteCategoryButton.addEventListener('click', () => {
       document.querySelector('.create-task-btn').style.display = 'block';
       innerListItemsUpdater('no-category-selected', 'category-heading', allToDos);
     } else {
-      alert('YOU ARE NOT ALLOWED TO DELETE THIS CATEGORY!');
+      myAlert('YOU ARE NOT ALLOWED TO DELETE THIS CATEGORY!');
     }
-  }
+  });
 });
 
 
@@ -236,7 +237,7 @@ backBtn.addEventListener('click', () => {
 const deleteTaskBtn = document.querySelector('.delete-task');
 
 deleteTaskBtn.addEventListener('click', () => {
-  if (confirm('Are you sure you want to delete this task?')) {
+  myConfirm('Are you sure you want to delete this task?', function(){
     const taskHeading = document.querySelector('.task-heading').textContent;
     for (let i = 0; i < allToDos.length; i += 1) {
       if (allToDos[i].getTaskTitle() === taskHeading) {
@@ -245,5 +246,5 @@ deleteTaskBtn.addEventListener('click', () => {
       }
     }
     backToListPage();
-  }
+  });
 });
