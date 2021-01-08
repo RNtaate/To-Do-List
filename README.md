@@ -1,17 +1,34 @@
 # To-Do-List
-The Library project demonstrates the Authors' understanding of JavaScript fundamentals, that include Objects and Object Constructors, DOM Manipulation, among others, by implementing the following requirements of the project:
 
-1. Setting up the project with skeleton HTML5/CSS3 and JS files.
+The Todo List demonstrates the Authors' understanding of dynamically creating objects using JavaScript fundamentals, that include either Factories, Constructors or Classes, by implementing the following requirements of the project:
 
-2. Adding a function to the script that can take the user’s input and store the new book objects into an array.
+1. View and edit all categories.
 
-3. Adding buttons to allow users to create, delete a book, and change the `read status` of a book.
+1. View and edit all todo/tasks in each categories 
+
+1. Click a single todo/task to see/edit its details
+
+1. Create and Delete a category.
+
+1. Create and Delete a task.
 
 
+## Screenshots
+![Screenshot](images/todo1.png)
+![Screenshot](images/todo2.png)
+![Screenshot](images/todo3.png)
+
+
+## LIVE DEMO
+[Live Demo Link](https://raw.githack.com/RNtaate/To-Do-List/feature_list/dist/index.html)
 
 ## Built With
 
-- HTML5, JavaScript, ES6 concepts and CSS3
+- HTML5 and CSS3
+- JavaScript(including ECMAScript 6 concepts)
+- Node Package Manager(npm) 
+- Webpack
+- Babel
 
 
 ## Getting Started
@@ -20,13 +37,15 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-- Code Editor of your choice
+- Install Node Package Manager(npm).
+- Code Editor of your choice.
 
 ### Setup
 
 - To clone the repo to your local repository. Follow this steps
-- <code> git clone https://github.com/Rumbie-Mudzie7/Library.git</code>
-- <code> cd library</code>
+- <code> git clone git@github.com:RNtaate/To-Do-List.git </code>
+- <code> cd to-do-list</code>
+- Run `npm install` to get all the necessary dependencies.
 - Open `index.html` in your preferred browser.
 
 
@@ -46,15 +65,15 @@ To get a local copy up and running follow these simple example steps.
 ## :handshake: Contributing
 
 There are two ways of contributing to this project:
-1.  If you see something wrong or not working, please check [the issue tracker section](https://github.com/Rumbie-Mudzie7/Library/issues), if that problem you met is not in already opened issues then open the issue by clicking on `new issue` button.
+1.  If you see something wrong or not working, please check [the issue tracker section](https://github.com/RNtaate/To-Do-List/issues ), if that problem you met is not in already opened issues then open the issue by clicking on `new issue` button.
 2.  If you have a solution to that, and you are willing to work on it, follow the below steps to contribute:
     1.  Fork this repository
-    1.  Clone it on your local computer by running `git clone https://github.com/Rumbie-Mudzie7/Library.git` __Replace *Rumbie-Mudzie7* with the username you use on github__
+    1.  Clone it on your local computer by running `git clone git@github.com:RNtaate/To-Do-List.git` __Replace *RNtaate* with the username you use on github__
     1.  Open the cloned repository which appears as a folder on your local computer with your favorite code editor
     1.  Create a separate branch off the *master branch*,
     1.  Write your codes which fix the issue you found
     1.  Commit and push the branch you created
-    1.  Raise a pull request, comparing your new created branch with our original master branch [here](https://github.com/Rumbie-Mudzie7/Library)
+    1.  Raise a pull request, comparing your new created branch with our original master branch [here](https://github.com/RNtaate/To-Do-List)
 
 
 
@@ -64,7 +83,7 @@ Give a :star:️ if you like this project!
 
 ## Acknowledgments
 [Microverse](https://www.microverse.org)
-[Odin Project](https://www.theodinproject.com/courses/javascript/lessons/library)
+[Odin Project](https://www.theodinproject.com/courses/javascript/lessons/todo-list)
 
 ## :memo: License
 
