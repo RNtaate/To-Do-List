@@ -1,5 +1,5 @@
-let saveDataToStorage = (key, arr) => {
+const saveDataToStorage = (key, arr) => {
   localStorage.setItem(key, JSON.stringify(arr));
-}
+};
 
 export default saveDataToStorage;

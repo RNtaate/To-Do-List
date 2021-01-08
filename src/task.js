@@ -29,7 +29,7 @@ class Task {
 
   getPriority() {
     return this.taskPriority;
-  } 
+  }
 
   setTask(title, description, date, priority, categoryName) {
     this.taskTitle = title;
