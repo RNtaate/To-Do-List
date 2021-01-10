@@ -47,7 +47,7 @@ const todoItemForm = (arr, existingTask = '') => {
   const mySelectDiv = document.createElement('div');
   const select = document.createElement('select');
   select.setAttribute('id', 'todoCategories');
-  
+
   for (let i = 0; i < arr.length; i += 1) {
     const op = document.createElement('option');
     op.setAttribute('value', arr[i].getName());
