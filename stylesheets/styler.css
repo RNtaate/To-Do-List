@@ -102,7 +102,6 @@ main {
 }
 
 .outer-list-items > span {
-  /* color: #fff; */
   font-size: 1.3em;
   font-weight: 500;
   padding: 10px 20px;
