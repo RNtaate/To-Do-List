@@ -49,6 +49,9 @@ To get a local copy up and running follow these simple example steps.
 - Open `index.html` in your preferred browser.
 
 
+### How to run tests
+- Run the following command in your terminal `npm run test`
+
 ## Author
 
 :bust_in_silhouette: **Rumbidzayi Mudziviri**
