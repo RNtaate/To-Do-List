@@ -1,6 +1,6 @@
 import Category from "../src/category";
 
-test.only('should return category name', () => {
+test('should return category name', () => {
   let myCategory = new Category('Running');
   expect(myCategory.getName()).toBe('Running');
 });
